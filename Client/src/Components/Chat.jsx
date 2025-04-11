@@ -1,5 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useMutation, useQuery, useSubscription, gql } from '@apollo/client';
+import '../../Styles/Chat.css';
+import NicknameInput from './NicknameInput';
+import MessageList from './MessageList';
+import ChatInput from './ChatInput';
+import ChatHeader from './ChatHeader';
 
 const GET_MESSAGES = gql`
   query {
@@ -41,14 +46,14 @@ function Chat() {
   const [sendMessage] = useMutation(SEND_MESSAGE);
   const { data: subData } = useSubscription(MESSAGE_SUBSCRIPTION);
 
-  // Cargar mensajes iniciales
+  const messagesEndRef = useRef(null);
+
   useEffect(() => {
     if (queryData?.messages) {
       setMessages(queryData.messages);
     }
   }, [queryData]);
 
-  // Mensaje para la suscripcion
   useEffect(() => {
     if (subData?.messageAdded) {
       setMessages((prev) => [...prev, subData.messageAdded]);
@@ -65,47 +70,27 @@ function Chat() {
     setContent('');
   };
 
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
   if (!nicknameSet) {
     return (
-      <div style={{ padding: '2rem' }}>
-        <h2>Ingresa tu nombre:</h2>
-        <input
-          value={user}
-          onChange={(e) => setUser(e.target.value)}
-          placeholder="Tu nick"
-        />
-        <button onClick={() => user && setNicknameSet(true)}>Entrar</button>
-      </div>
+      <NicknameInput
+        user={user}
+        setUser={setUser}
+        setNicknameSet={setNicknameSet}
+      />
     );
   }
 
   return (
-    //Estilo temporal, tengo que agregarle su real css xd
-    <div style={{ padding: '2rem' }}>
-      <h2>Chat como <strong>{user}</strong></h2>
-      <div style={{
-        maxHeight: '300px',
-        overflowY: 'auto',
-        border: '1px solid #ccc',
-        padding: '1rem',
-        marginBottom: '1rem'
-      }}>
-        {messages.map((msg) => (
-          <div key={msg.id}>
-            <strong>{msg.user}:</strong> {msg.content}
-          </div>
-        ))}
+    <div className="chat-wrapper">
+      <div className="chat-container">
+        <ChatHeader user={user} />
+        <MessageList messages={messages} user={user} messagesEndRef={messagesEndRef} />
+        <ChatInput content={content} setContent={setContent} handleSend={handleSend} />
       </div>
-
-      <form onSubmit={handleSend}>
-        <input
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          placeholder="Escribe un mensaje"
-          style={{ width: '70%' }}
-        />
-        <button type="submit">Enviar</button>
-      </form>
     </div>
   );
 }

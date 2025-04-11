@@ -1,0 +1,137 @@
+.chat-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    width: 100%;
+    background-color: #f7f7f7;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .chat-header {
+    background-color: #558ac2;
+    color: rgb(233, 245, 255);
+    padding: 1rem;
+    text-align: center;
+  }
+  
+  .header-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+  }
+  
+  .chat-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 600px;
+    height: 100%;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .chat-header {
+    font-size: 1.5rem;
+    margin: 1rem;
+    text-align: center;
+  }
+  
+  .message-list {
+    flex: 1;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    overflow-y: auto;
+    max-height: calc(100vh - 200px);
+    overflow-x: hidden;
+  }
+  
+  .message-bubble {
+    max-width: 50%;
+    margin-bottom: 1rem;
+    padding: 0.75rem 1rem;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    word-break: break-word;
+    word-wrap: break-word;
+  }
+  
+  .message-bubble.own {
+    background-color: #dcf8c6;
+    text-align: right;
+    border: 1px solid #a3d9a0;
+    margin-left: auto;
+  }
+  
+  .message-bubble.other {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    margin-right: auto;
+  }
+  
+  .message-user {
+    font-size: 0.75rem;
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+    color: #555;
+  }
+  
+  .message-text {
+    font-size: 1rem;
+  }
+  
+  .chat-input {
+    width: 70%;
+    padding: 0.5rem;
+    border-radius: 15px;
+    border: 1px solid #ccc;
+    margin: 1rem;
+    margin-top: auto;
+  }
+  
+  button {
+    padding: 0.5rem 1rem;
+    border-radius: 15px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  .nickname-input {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .nickname-input input {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  .nickname-input button {
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .nickname-input button:hover {
+    background-color: #0056b3;
+  }
+  
