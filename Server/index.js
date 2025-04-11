@@ -1,6 +1,8 @@
 import { createServer } from 'node:http';
 import { createPubSub, createSchema, createYoga } from 'graphql-yoga';
-import { v4 as uuidv4 } from 'uuid'; // Importamos uuid
+import { v4 as uuidv4 } from 'uuid';
+import { useServer } from 'graphql-ws/use/ws';
+import { WebSocketServer } from 'ws';
 
 const pubSub = createPubSub();
 const MESSAGE_ADDED = 'MESSAGE_ADDED';
@@ -48,11 +50,13 @@ const resolvers = {
   },
 };
 
+const schema = createSchema({
+  typeDefs,
+  resolvers,
+});
+
 const yoga = createYoga({
-  schema: createSchema({
-    typeDefs,
-    resolvers,
-  }),
+  schema,
   graphqlEndpoint: '/graphql',
   cors: {
     origin: '*',
@@ -60,6 +64,26 @@ const yoga = createYoga({
 });
 
 const server = createServer(yoga);
+
+const wsServer = new WebSocketServer({
+  server,
+  path: '/graphql',
+});
+
+useServer(
+  {
+    schema,
+    execute: yoga.execute,
+    subscribe: yoga.subscribe,
+    onConnect: (ctx) => {
+      console.log('Cliente WebSocket conectado');
+    },
+    onDisconnect: (ctx, code, reason) => {
+      console.log('Cliente WebSocket desconectado');
+    },
+  },
+  wsServer
+);
 
 server.listen(4000, () => {
   console.log('Servidor listo en http://localhost:4000/graphql');
