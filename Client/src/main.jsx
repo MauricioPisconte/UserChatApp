@@ -6,6 +6,6 @@ import { client } from './apollo';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <ApolloProvider client={client}>
-    <App />
+      <App />
   </ApolloProvider>
 );
